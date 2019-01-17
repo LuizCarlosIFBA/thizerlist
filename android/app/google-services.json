@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "567540552155",
+    "firebase_url": "https://my-project-1531571583567.firebaseio.com",
+    "project_id": "my-project-1531571583567",
+    "storage_bucket": "my-project-1531571583567.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567540552155:android:7061888aa62db078",
+        "android_client_info": {
+          "package_name": "br.com.thizer.thizerlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567540552155-5kg75588d9tgbvg47gec19k1n1qikkub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAujRKQg6GBdd2eLyOI1kCUspP9-TMOLTM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

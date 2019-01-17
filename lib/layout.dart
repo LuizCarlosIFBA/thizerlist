@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'pages/home.dart';
 import 'pages/about.dart';
@@ -96,15 +97,21 @@ class Layout {
                     child: Text('Adicionar', style: TextStyle(color: Layout.light())),
                     onPressed: () {
                       
-                      HomeList.items.add(
-                        ListTile(
-                          leading: Icon(Icons.pages),
-                          title: Text(_c.text),
-                          trailing: Icon(Icons.more_vert),
-                        )
-                      );
+                      Firestore.instance.collection('listas').add({
+                        'nome': _c.text
+                      });
+                      
+                      Navigator.of(ctx).pop();
 
-                      Navigator.of(ctx).popAndPushNamed(HomePage.tag);
+                      // HomeList.items.add(
+                      //   ListTile(
+                      //     leading: Icon(Icons.pages),
+                      //     title: Text(_c.text),
+                      //     trailing: Icon(Icons.more_vert),
+                      //   )
+                      // );
+
+                      // Navigator.of(ctx).popAndPushNamed(HomePage.tag);
                     },
                   )
                 ],
