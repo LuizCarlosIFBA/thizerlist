@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'pages/home.dart';
 import 'pages/about.dart';
 import 'pages/settings.dart';
-import 'pages/list.dart';
 
-import 'widgets/HomeList.dart';
+import 'models/lista.dart';
 
 class Layout {
 
@@ -29,7 +28,7 @@ class Layout {
       ],
       onTap: (int i) {
         currItem = i;
-        Navigator.of(context).pushNamed(pages[i]);
+        Navigator.of(context).popAndPushNamed(pages[i]);
       },
     );
 
@@ -101,20 +100,22 @@ class Layout {
                   RaisedButton(
                     color: primary(),
                     child: Text('Adicionar', style: TextStyle(color: Layout.light())),
-                    onPressed: () {
+                    onPressed: () async {
                       
-                      HomeList.items.add(
-                        ListTile(
-                          leading: Icon(Icons.pages),
-                          title: Text(_c.text),
-                          trailing: Icon(Icons.more_vert),
-                          onTap: () {
-                            Navigator.of(context).pushNamed(ListPage.tag);
-                          },
-                        )
-                      );
+                      Lista listaBo = Lista();
 
-                      Navigator.of(ctx).popAndPushNamed(HomePage.tag);
+                      // if (listaBo.isDatabaseClosedError) {
+                      //   listaBo.init();
+                      // }
+                      
+                      // Pode acontecer do banco nao ter sido iniciado aqui
+                      listaBo.insert({
+                        'name': _c.text,
+                        'created': DateTime.now().toString()
+                      }).then((saved) {
+                        // listaBo.disposed();
+                        Navigator.of(ctx).popAndPushNamed(HomePage.tag);
+                      });
                     },
                   )
                 ],
