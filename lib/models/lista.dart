@@ -1,13 +1,15 @@
-import 'package:dbutils/sqllitedb.dart';
 import 'package:sqflite/sqflite.dart';
+import 'AbstractModel.dart';
 
 import 'package:thizerlist/application.dart';
 
-class Lista extends DBInterface {
+class Lista extends AbstractModel {
+
+  /// 
+  /// Singleton
+  /// 
 
   static Lista _this;
-
-  Lista.getInstance() : super();
 
   factory Lista() {
     if (_this == null) {
@@ -16,53 +18,56 @@ class Lista extends DBInterface {
     return _this;
   }
 
-  /// Nome do banco de dados
-  @override
-  String get name => dbName;
+  Lista.getInstance() : super();
+
+  /// 
+  /// The Instance
+  /// 
 
   @override
-  int get version => dbVersion;
+  String get dbname => dbName;
 
   @override
-  Future onCreate(Database db, int version) async {
-    
-    // Datetime Format = YYYY-MM-DD HH:MM:SS.SSS
-    db.execute("""
-      CREATE TABLE lista (
-        pk_lista INTEGER PRIMARY KEY,
-        name TEXT,
-        created TEXT
-      )
-    """);
+  int get dbversion => dbVersion;
 
-    // db.insert('lista', {
-    //   'name': 'Teste numero 1',
-    //   'created': DateTime.now().toString()
-    // });
-
-    // db.execute("""
-    //   CREATE TABLE item (
-    //     pk_item INTEGER PRIMARY KEY,
-    //     fk_lista INTEGER,
-    //     name TEXT,
-    //     quantidade INTEGER,
-    //     valor DECIMAL(10,2),
-    //     created TEXT
-    //   )
-    // """);
+  @override
+  Future<List<Map>> list() async {
+    Database db = await this.getDb();
+    return db.rawQuery('SELECT * FROM lista ORDER BY created DESC');
   }
 
-  Future<bool> save() async {
-    var rec = await saveRec('lista');
-    return rec.isNotEmpty;
+  @override
+  Future<Map> getItem(dynamic where) async {
+    Database db = await this.getDb();
+    List<Map> items = await db.query('lista', where: 'pk_lista = ?', whereArgs: [where]);
+
+    Map result = Map();
+    if (items.isNotEmpty) {
+      result = items.first;
+    }
+    return result;
   }
 
-  Future<bool> insert(Map<String, dynamic> items) async {
-    return await this.saveMap('lista', items);
+  @override
+  Future<int> insert(Map<String, dynamic> values) async {
+
+    Database db = await this.getDb();
+    int newId = await db.insert('lista', values);
+
+    return newId;
   }
 
-  Future<List<Map>> getListas() async {
-    return await this.rawQuery('SELECT * FROM lista ORDER BY created DESC');
+  @override
+  Future<bool> update(Map<String, dynamic> values, dynamic where) async {
+    return null;
   }
 
+  @override
+  Future<bool> delete(dynamic id) async {
+
+    Database db = await this.getDb();
+    int rows = await db.delete('lista', where: 'pk_lista = ?', whereArgs: [id]);
+
+    return (rows != 0);
+  }
 }

@@ -19,27 +19,10 @@ class HomePageState extends State<HomePage> {
   Lista listaBo = Lista();
 
   @override
-  void initState() {
-    super.initState();
-    
-    // Inicia tabela do banco
-    listaBo.init();
-  }
-
-  @override
-  void dispose() {
-    
-    // Finaliza conexao com banco
-    listaBo.disposed();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context){
 
     final content = FutureBuilder(
-      future: listaBo.getListas(),
+      future: listaBo.list(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:

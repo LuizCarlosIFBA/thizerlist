@@ -24,24 +24,6 @@ class _HomeListState extends State<HomeList> {
   Lista listaBo = Lista();
 
   @override
-  void initState() {
-    // Inicia tabela do banco
-    if (listaBo.db == null) {
-      listaBo.init();
-    }
-
-    super.initState();
-  }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-
-  //   // Finaliza conexao com banco
-  //   listaBo.disposed();
-  // }
-
-  @override
   Widget build(BuildContext context) {
 
     // Item default
@@ -73,13 +55,13 @@ class _HomeListState extends State<HomeList> {
             onSelected: (ListAction result) {
               switch(result) {
                 case ListAction.delete:
-
-                  if (listaBo.db == null) {
-                    listaBo.init();
-                  }
-
-                  listaBo.db.delete('lista', where: 'pk_lista = ?', whereArgs: [item['pk_lista']]);
-                  Navigator.of(context).popAndPushNamed(HomePage.tag);
+                  
+                  listaBo.delete(item['pk_lista']).then((deleted) {
+                    if (deleted) {
+                      Navigator.of(context).pushReplacementNamed(HomePage.tag);
+                    }
+                  });
+                
                 break;
                 case ListAction.edit:
 

@@ -28,7 +28,7 @@ class Layout {
       ],
       onTap: (int i) {
         currItem = i;
-        Navigator.of(context).popAndPushNamed(pages[i]);
+        Navigator.of(context).pushReplacementNamed(pages[i]);
       },
     );
 
@@ -70,6 +70,7 @@ class Layout {
             builder: (BuildContext ctx) {
 
               final input = TextFormField(
+                autofocus: true,
                 controller: _c,
                 decoration: InputDecoration(
                   hintText: 'Nome',
@@ -104,18 +105,14 @@ class Layout {
                       
                       Lista listaBo = Lista();
 
-                      // if (listaBo.isDatabaseClosedError) {
-                      //   listaBo.init();
-                      // }
-                      
-                      // Pode acontecer do banco nao ter sido iniciado aqui
                       listaBo.insert({
                         'name': _c.text,
                         'created': DateTime.now().toString()
-                      }).then((saved) {
-                        // listaBo.disposed();
-                        Navigator.of(ctx).popAndPushNamed(HomePage.tag);
+                      }).then((newRowId) {
+                        Navigator.of(ctx).pop();
+                        Navigator.of(ctx).pushReplacementNamed(HomePage.tag);
                       });
+                      
                     },
                   )
                 ],
